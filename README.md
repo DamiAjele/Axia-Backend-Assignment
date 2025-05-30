@@ -1,5 +1,5 @@
 # Express User App
-This is a simple express app that allows users to register and log in
+This is a simple express app that allows users to register and log into their accounts to access their information. Users are also allowed to update and delete their information.
 
 ## Features
 - User Registration
@@ -17,7 +17,7 @@ This is a simple express app that allows users to register and log in
 - **PUT** `http://localhost:5000/`
 - **DELETE** `http://localhost:5000/`
 
-## Dependencies
+## Tech Stack
 - express
 - mongoose
 - bcrypt.js
