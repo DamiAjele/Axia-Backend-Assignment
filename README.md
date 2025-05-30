@@ -1,4 +1,4 @@
-### Express User App
+# Express User App
 This is a simple express app that allows users to register and log in
 
 ## Features
