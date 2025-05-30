@@ -13,6 +13,7 @@ This is a simple express app that allows users to register and log in
 - **POST** `http://localhost:5000/user-login`
 
 ### Other Endpoints
+- **GET** `http://localhost:5000/`
 - **PUT** `http://localhost:5000/`
 - **DELETE** `http://localhost:5000/`
 
