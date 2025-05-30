@@ -1,5 +1,5 @@
 # Express User App
-This is a simple express app that allows users to register and log into their accounts to access their information. Users are also allowed to update and delete their information.
+This is a simple express app that allows users to register and log into their accounts to access their information. Users are also allowed to update and delete their details.
 
 ## Features
 - User Registration
