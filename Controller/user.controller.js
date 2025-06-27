@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const userModel = require("../Model/user.model");
 const bcrypt = require("bcrypt");
 
@@ -55,11 +56,22 @@ const loginUser = async (req, res) => {
         return res.send("Invalid Password")
     }
 
+    // create token
+    const token = jwt.sign(
+        {id: isUser.id, name: isUser.name, admin: isUser.admin},
+        process.env.JWT_SECRET,
+        {expiresIn: "72hr"}
+    )
     // return basic information
-    return res.json({id: isUser.id, name: isUser.name, email: isUser.email})
+    return res
+    .cookie("token", token, {
+        maxAge: 72 * 60 * 60 * 60,
+        secure: true,
+        httpOnly: true,
+    });
 } catch(error) {
-    console.log(error)
-    return res.send("Something went wrong")
+    console.log(error.message)
+    return res.send(error.message)
 }};
 
 // Get all Users
@@ -73,6 +85,20 @@ const getUsers = async (req, res) => {
     console.log(error)
     res.send("Something went wrong")
 }};
+
+
+// Get one user
+const getOneUser = async (req, res) => {
+    const {id} = req.user;
+
+    try{
+        const getUser = await userModel.findById(id).populate("kyc").populate("posts");
+        return res.json(getUser)
+
+    } catch(error) {
+        return res.send("something went wrong")
+    }
+};
 
 
 // Update Users
@@ -104,4 +130,4 @@ const deleteUser = async (req, res) => {
 }};
 
 
-module.exports = {createUser, loginUser, getUsers, updateUsers, deleteUser};
+module.exports = {createUser, loginUser, getOneUser, getUsers, updateUsers, deleteUser};

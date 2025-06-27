@@ -1,9 +1,11 @@
-# Express User App
-This is a simple express app that allows users to register and log into their accounts to access their information. Users are also allowed to update and delete their details.
+# Blog Application
+This is a blog application that allow users to register, log into their accounts (Authentication), do their KYC and write posts (Authorization). Users are also allowed to update and delete their details.
 
 ## Features
 - User Registration
 - User Login
+- KYC ( Know Your Customer)
+- Posts
 
 ## API Endpoints
 ### For Registration
@@ -23,6 +25,8 @@ This is a simple express app that allows users to register and log into their ac
 - bcrypt.js
 - dotenv
 - nodemon
+- cookie parser
+- JWT
 
-## Author
+## Creator
 Damilola Ajele
