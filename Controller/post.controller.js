@@ -32,9 +32,9 @@ const getSinglePost = async (req, res) => {
     const { postId } = req.query;
     try {
         const post = await postModel.findById(postId).populate("creator");
-        return res.json(post);
+        return res.status(200).json(post);
     } catch(error) {
-        return res.send("something went wrong");
+        return res.send(error.message);
     }
 };
 
@@ -47,17 +47,17 @@ const deletePost = async (req, res) => {
     // check for post existence
     const post = await postModel.findById(postId);
     if(!post) {
-        return res.send("post does not exist");
+        return res.json({message: "post does not exist"});
     }
 
     //check if its creator
     if(id != post.creator && !admin) {
-        return res.send("this post does not belong to you")
+        return res.json({message: "this post does not belong to you"})
     }
 
     try{
         await postModel.findByIdAndDelete(postId)
-        return res.send("post deleted successfully!!!");
+        return res.status(200).json({message: "post deleted successfully!!!"});
 
     } catch(error) {
         return res.send(error.message)
@@ -72,20 +72,20 @@ const updatePost = async (req, res) => {
     //get the post
     const post = await postModel.findById(postId);
     if(!post) {
-        return res.send("post does not exist");
+        return res.json({message: "post does not exist"});
     }
 
     // check if its the owner
     if(userId != post.creator) {
-        return res.send("you can only update your post")
+    return res.json({message: "you can only update your post"})
     }
 
     try{
         await postModel.findByIdAndUpdate(postId, {...body}, {new: true});
-        res.send("post updated successfully")
+        res.status(200).json({message: "post updated successfully"})
 
     } catch(error) {
-        res.send("something went wrong")
+        res.send(error.message)
     }
 
 };
@@ -96,10 +96,10 @@ const getUserPosts = async (req, res) => {
 
     try{
         const posts = await postModel.find({ creator: userId});
-        return res.send(posts)
+        return res.status(200).json(posts)
 
     } catch (error) {
-        res.send("something went wrong")
+        res.send(error.message)
     }
 };
 

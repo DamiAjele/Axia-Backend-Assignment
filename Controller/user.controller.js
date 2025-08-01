@@ -9,7 +9,7 @@ const createUser = async (req, res) => {
 
     // To check if email and password already exists
     if (!email || !password) {
-        return res.send("Please provide valid registration credentials");
+        return res.json({message: "Please provide Valid Registration Credentials"});
     };
 
     //check if user exists in database
@@ -18,7 +18,7 @@ const createUser = async (req, res) => {
     );
 
     if (isUser) {
-        return res.send("User already exists, please login to your account")
+        return res.json({ message: "User already exists, please login to your account" })
     };
 
     // create hashed password
@@ -30,10 +30,10 @@ const createUser = async (req, res) => {
     try {
         const newUser = new userModel({email, password: hashedPassword, ...others});
         const savedUser = await newUser.save();
-        return res.json(savedUser)
+        return res.status(201).json(savedUser);
     } catch (error) {
         console.log(error)
-        return res.send('something went wrong');
+        return res.send(error.message);
     }
 };
 
@@ -46,21 +46,21 @@ const loginUser = async (req, res) => {
     const isUser = await userModel.findOne({email:email})
 
     if (!isUser) {
-        return res.send("This account does not exist, create account")
+        return res.json({ message: "This account does not exist, create account"})
     };
 
     // Compare password
     const isValid = bcrypt.compareSync(password, isUser.password)
 
     if (!isValid) {
-        return res.send("Invalid Password")
+        return res.json({ message: "Invalid Password"})
     }
 
     // create token
     const token = jwt.sign(
         {id: isUser.id, name: isUser.name, admin: isUser.admin},
         process.env.JWT_SECRET,
-        {expiresIn: "72hr"}
+        {expiresIn: "100hr"}
     )
     // return basic information
     return res
@@ -80,10 +80,10 @@ const getUsers = async (req, res) => {
     try{
     const getAllUsers = await userModel.find()
 
-    res.json(getAllUsers);
+    res.status(200).json(getAllUsers);
 } catch(error){
     console.log(error)
-    res.send("Something went wrong")
+    res.send(error.message)
 }};
 
 
@@ -93,10 +93,10 @@ const getOneUser = async (req, res) => {
 
     try{
         const getUser = await userModel.findById(id).populate("kyc").populate("posts");
-        return res.json(getUser)
+        return res.status(200).json(getUser)
 
     } catch(error) {
-        return res.send("something went wrong")
+        return res.send(error.message)
     }
 };
 
@@ -112,10 +112,10 @@ try {
         {new: true}
     );
 
-    return res.json(updatedUser);
+    return res.status(200).json(updatedUser);
 } catch(error) {
     console.log(error)
-    return res.send("Something went wrong")
+    return res.send(error.message)
 }};
 
 // Delete User
@@ -123,10 +123,10 @@ const deleteUser = async (req, res) => {
     const {id} = req.query;
     try{
     const deletedUser = await userModel.findByIdAndDelete(id)
-    return res.json(deletedUser)
+    return res.status(200).json(deletedUser)
 } catch(error) {
     console.log(error)
-    return res.send("something went wrong")
+    return res.send(error.message)
 }};
 
 
