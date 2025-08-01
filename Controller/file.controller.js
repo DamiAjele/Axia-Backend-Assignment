@@ -94,13 +94,15 @@ const arrayFile = async (req, res) => {
 
 //Upload array of files in multiple fields
 const multipleFile = async (req, res) => {
-    try {
+
         const body = req.body;
         const file = req.files;
         console.log(req.files);
         console.log(req.body);
-
-
+    
+    
+    
+    try {
         // Upload to cloudinary 
         const previewPixResponse = await cloudinary.uploader.upload(file["previewPix"][0].path);
         const detailedPixResponse = await cloudinary.uploader.upload(file["detailedPix"][0].path);
