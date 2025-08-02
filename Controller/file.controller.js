@@ -10,13 +10,15 @@ cloudinary.config({
 
 // upload single file in a single field
 const singleFile = async (req, res) => {
+        const { id } = req.user;
         const body = req.body;
         const file = req.file;
         console.log(req.file)
         console.log(req.body)
     
     
-       try {
+       
+ try {
         // Upload previewpix only to cloudinary 
         const response = await cloudinary.uploader.upload(file["previewPix"][0].path);
         console.log(response);
@@ -50,7 +52,7 @@ const singleFile = async (req, res) => {
 
 // upload array of files in a single field
 const arrayFile = async (req, res) => {
-      
+    const { id }  = req.user;
    const body = req.body;
    const file = req.files;
    console.log(req.files)
@@ -94,7 +96,7 @@ const arrayFile = async (req, res) => {
 
 //Upload array of files in multiple fields
 const multipleFile = async (req, res) => {
-
+        const { id } = req.user;
         const body = req.body;
         const file = req.files;
         console.log(req.files);
@@ -102,7 +104,7 @@ const multipleFile = async (req, res) => {
     
     
     
-    try {
+try {
         // Upload to cloudinary 
         const previewPixResponse = await cloudinary.uploader.upload(file["previewPix"][0].path);
         const detailedPixResponse = await cloudinary.uploader.upload(file["detailedPix"][0].path);
